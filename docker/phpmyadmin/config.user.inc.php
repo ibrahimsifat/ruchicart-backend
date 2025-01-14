@@ -16,7 +16,7 @@ $cfg['DefaultConnectionCollation'] = 'utf8mb4_unicode_ci';
 
 // SSL and Cookie Settings
 $cfg['ForceSSL'] = false;
-$cfg['PmaAbsoluteUri'] = 'https://ruchicart.com/phpmyadmin/';
+$cfg['PmaAbsoluteUri'] = '';
 $cfg['Cookie_SameSite'] = 'Lax';
 $cfg['AuthLog'] = 'syslog';
 $cfg['TrustedProxies'] = ['nginx'];  // Trust the nginx proxy
@@ -27,6 +27,11 @@ $cfg['LoginCookieStore'] = 0;
 $cfg['LoginCookieRecall'] = true;
 $cfg['CookieSameSite'] = 'Lax';
 $cfg['EnableAutocompleteForTablesAndColumns'] = true;
+$cfg['blowfish_secret'] = 'Hj9bN#mK3$pL7vX2@qR5tY8wC4nF6dE1'; 
+$cfg['ProxyPass'] = '';
+$cfg['ProxyUser'] = '';
+$cfg['ProxyUrl'] = '';
+$cfg['CheckConfigurationPermissions'] = false;
 
 // Error Handling
 $cfg['Error_Handler']['display'] = false;

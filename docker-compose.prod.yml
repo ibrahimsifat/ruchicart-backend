@@ -89,34 +89,32 @@ services:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       UPLOAD_LIMIT: 64M
-      MAX_EXECUTION_TIME: 300
+      MAX_EXECUTION_TIME: 600
       MEMORY_LIMIT: 256M
-      PMA_ABSOLUTE_URI: https://ruchicart.com/phpmyadmin/
-      PMA_COOKIE_SAMESITE: "Lax"
-      HTTPS: "false"
+      PMA_SECURE: "false" # Let Nginx handle HTTPS
+      HTTPS: "false" # Prevent SSL mismatch
+      PMA_ARBITRARY: 0
+      MYSQL_ROOT_HOST: "%"
       PMA_PORT: 3306
-    ports:
-      - "8081:80"
-    networks:
-      - app-network
+      PMA_ABSOLUTE_URI: ""
+      PMA_USER: ${DB_USERNAME}
+      PMA_PASSWORD: ${DB_PASSWORD}
     depends_on:
       db:
         condition: service_healthy
-    volumes:
-      - ./docker/php/php.ini:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
-      - ./config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
-    restart: unless-stopped
     deploy:
       resources:
         limits:
           cpus: "0.5"
           memory: 512M
-    healthcheck:
-      test: ["CMD", "wget", "-O", "/dev/null", "http://localhost:80/"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
+    ports:
+      - "8081:80"
+    networks:
+      - app-network
+    volumes:
+      - ./docker/php/php.ini:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
+      - ./config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
+    restart: unless-stopped
 
   redis:
     image: redis:alpine
