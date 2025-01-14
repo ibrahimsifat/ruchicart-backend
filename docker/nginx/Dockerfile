@@ -1,10 +1,11 @@
 FROM nginx:alpine
 
-# Install necessary packages
+# Install necessary packages including the nginx modules
 RUN apk add --no-cache \
     curl \
     vim \
-    bash
+    bash \
+    nginx-mod-http-sub
 
 # Create cache directories
 RUN mkdir -p /var/cache/nginx/client_temp && \
@@ -27,6 +28,9 @@ RUN chmod 755 /var/cache/nginx -R && \
     chown nginx:nginx /var/cache/nginx -R && \
     touch /var/run/nginx.pid && \
     chown nginx:nginx /var/run/nginx.pid
+
+# Ensure the modules directory exists
+RUN mkdir -p /etc/nginx/modules
 
 EXPOSE 80
 EXPOSE 443
