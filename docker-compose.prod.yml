@@ -56,18 +56,30 @@ services:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_HOST: "%" # Add this to allow connections from any host
     volumes:
       - dbdata:/var/lib/mysql
       - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d
     restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p${DB_ROOT_PASSWORD}",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - app-network
-    deploy:
-      resources:
-        limits:
-          cpus: "1.0"
-          memory: 2G
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: handyman_phpmyadmin_prod
