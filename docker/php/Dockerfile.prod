@@ -1,0 +1,85 @@
+FROM php:8.2-fpm
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    libzip-dev \
+    libicu-dev \
+    libpq-dev \
+    librabbitmq-dev \
+    libssl-dev \
+    supervisor \
+    pkg-config \
+    libbrotli-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions
+RUN docker-php-ext-install \
+    pdo_mysql \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    opcache \
+    zip \
+    intl \
+    sockets
+
+# Install Redis extension
+RUN pecl install redis && docker-php-ext-enable redis
+
+# Install Swoole without brotli and other unnecessary components
+RUN pecl install swoole \
+    --enable-sockets=yes \
+    --enable-openssl=yes \
+    --enable-http2=yes \
+    --enable-mysqlnd=no \
+    --enable-swoole-curl=no \
+    --enable-cares=no \
+    --enable-brotli=no \
+    && docker-php-ext-enable swoole
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set working directory
+WORKDIR /var/www
+
+# Create system user
+RUN groupadd -g 1000 www
+RUN useradd -u 1000 -ms /bin/bash -g www www
+
+# Create Laravel directory structure with proper permissions
+RUN mkdir -p /var/www/vendor \
+    /var/www/storage/framework/sessions \
+    /var/www/storage/framework/views \
+    /var/www/storage/framework/cache \
+    /var/www/storage/logs \
+    /var/www/bootstrap/cache
+
+# Set proper permissions
+RUN chown -R www:www /var/www && \
+    chmod -R 775 /var/www/storage && \
+    chmod -R 775 /var/www/bootstrap/cache && \
+    chmod -R 775 /var/www/vendor
+
+# Create composer directory for user
+RUN mkdir -p /home/www/.composer && \
+    chown -R www:www /home/www
+
+# Copy project files
+COPY --chown=www:www . /var/www/
+
+# Switch to non-root user
+USER www
+
+EXPOSE 9000
+
+CMD ["php-fpm"]
