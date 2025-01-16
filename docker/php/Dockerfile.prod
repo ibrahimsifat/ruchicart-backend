@@ -64,11 +64,12 @@ RUN mkdir -p /var/www/vendor \
     /var/www/storage/logs \
     /var/www/bootstrap/cache
 
-# Set proper permissions
+# Set proper permissions for all required directories
 RUN chown -R www:www /var/www && \
     chmod -R 775 /var/www/storage && \
     chmod -R 775 /var/www/bootstrap/cache && \
-    chmod -R 775 /var/www/vendor
+    chmod -R 775 /var/www/vendor && \
+    chmod -R 775 /var/www/resources
 
 # Create composer directory for user
 RUN mkdir -p /home/www/.composer && \

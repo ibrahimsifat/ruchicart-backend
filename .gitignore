@@ -5,6 +5,7 @@
 /vendor
 .env
 .env.prod
+.env.docker
 .env.backup
 *.sock
 .phpunit.result.cache
