@@ -62,7 +62,8 @@ RUN mkdir -p /var/www/vendor \
     /var/www/storage/framework/views \
     /var/www/storage/framework/cache \
     /var/www/storage/logs \
-    /var/www/bootstrap/cache
+    /var/www/bootstrap/cache \
+    /var/www/resources 
 
 # Set proper permissions for all required directories
 RUN chown -R www:www /var/www && \

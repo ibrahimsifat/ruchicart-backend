@@ -35,9 +35,11 @@ docker-compose -f docker-compose.dev.yml exec php php artisan view:clear
 
 # To build and run:
 
-## Development: docker-compose -f docker-compose.dev.yml up --build
-
 ## Production:
+
+1. cd ver and make www folder
+2. git clone
+3. nano .env
 
 setup SSL
 
@@ -49,7 +51,6 @@ sudo apt-get install certbot python3-certbot-nginx
 
 sudo certbot --nginx -d ruchicart.com -d www.ruchicart.com
 
-0. nano .env
 1. docker-compose -f docker-compose.prod.yml up -d --build
 2. docker-compose -f docker-compose.prod.yml exec --user root php bash
 3. composer install
