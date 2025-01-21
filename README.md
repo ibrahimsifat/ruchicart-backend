@@ -49,6 +49,7 @@ sudo apt-get install certbot python3-certbot-nginx
 
 sudo certbot --nginx -d ruchicart.com -d www.ruchicart.com
 
+0. nano .env
 1. docker-compose -f docker-compose.prod.yml up -d --build
 2. docker-compose -f docker-compose.prod.yml exec --user root php bash
 3. composer install
@@ -60,3 +61,4 @@ sudo certbot --nginx -d ruchicart.com -d www.ruchicart.com
    chown -R www:www /var/www/bootstrap/cache
    chmod -R 775 /var/www/storage
    chmod -R 775 /var/www/bootstrap/cache
+   php artisan passport:keys
