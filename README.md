@@ -57,9 +57,11 @@ sudo certbot --nginx -d ruchicart.com -d www.ruchicart.com
 
 # Set correct ownership and permissions
 
-1. docker-compose -f docker-compose.prod.yml exec --user root php bash
-   chown -R www:www /var/www/storage
-   chown -R www:www /var/www/bootstrap/cache
-   chmod -R 775 /var/www/storage
-   chmod -R 775 /var/www/bootstrap/cache
-   php artisan passport:keys
+chown -R www:www /var/www/storage
+chown -R www:www /var/www/bootstrap/cache
+chmod -R 775 /var/www/storage
+chmod -R 775 /var/www/bootstrap/cache
+chown -R www:www /var/www/resources
+chmod -R 775 /var/www/resources
+
+php artisan passport:keys
