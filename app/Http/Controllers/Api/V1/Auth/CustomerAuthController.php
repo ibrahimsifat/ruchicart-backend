@@ -104,7 +104,7 @@ class CustomerAuthController extends Controller
         $phoneVerification = (int) $this->loginSetup->where(['key' => 'phone_verification'])?->first()->value ?? 0;
 
         if ($phoneVerification == 1) {
-            $OTPIntervalTime = Helpers::get_business_settings('otp_resend_time') ?? 60;// seconds
+            $OTPIntervalTime = Helpers::get_business_settings('otp_resend_time') ?? 120;// seconds
             $OTPVerificationData = DB::table('phone_verifications')->where('phone', $request['phone'])->first();
 
             if(isset($OTPVerificationData) &&  Carbon::parse($OTPVerificationData->created_at)->DiffInSeconds() < $OTPIntervalTime){
@@ -603,7 +603,7 @@ class CustomerAuthController extends Controller
         }
 
         $user = $this->user->where('phone', $responseData['phoneNumber'])->first();
-
+        
         if (isset($user)){
             if ($request['is_reset_token'] == 1){
                 DB::table('password_resets')->updateOrInsert(['email_or_phone' => $request->phoneNumber], [
@@ -618,9 +618,9 @@ class CustomerAuthController extends Controller
                 return response()->json(['errors' => null, 'token' => $token], 200);
             }
         }
-
-        $tempToken = Str::random(120);
-        return response()->json(['errors' => null, 'temp_token' => $tempToken], 200);
+        // replace tempToken to token for signup. when user signup they will login auto
+        // $tempToken = Str::random(120);
+        return response()->json(['errors' => null, 'token' =>  $user->createToken('AuthToken')->accessToken], 200);
     }
 
     public function verifyOTP(Request $request)
