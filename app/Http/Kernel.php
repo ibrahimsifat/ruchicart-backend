@@ -85,6 +85,6 @@ class Kernel extends HttpKernel
         'branch_status' => BranchStatusCheck::class,
         'branch_adder' => BranchAdder::class,
         'maintenance_mode' => MaintenanceModeMiddleware::class,
-         'cors' => \App\Http\Middleware\Cors::class,
+        //  'cors' => \App\Http\Middleware\Cors::class,
     ];
 }
