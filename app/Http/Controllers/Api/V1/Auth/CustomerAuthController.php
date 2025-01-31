@@ -619,16 +619,16 @@ class CustomerAuthController extends Controller
             }
         }
         // replace tempToken to token for signup. when user signup they will login auto
-        // $tempToken = Str::random(120);
-        // return response()->json(['errors' => null, 'temp_token' => $tempToken], 200);
+        $tempToken = Str::random(120);
+        return response()->json(['errors' => null, 'temp_token' => $tempToken], 200);
 
         // new
           // No need to create user - just generate token for new user signups
-        $token = $user->createToken('AuthToken')->accessToken;
-        $user->is_phone_verified = 1;
-        $user->save();
+        // $token = $user->createToken('AuthToken')->accessToken;
+        // $user->is_phone_verified = 1;
+        // $user->save();
         
-        return response()->json(['errors' => null,'token' => $token], 200);
+        // return response()->json(['errors' => null,'token' => $token], 200);
     }
 
     public function verifyOTP(Request $request)
