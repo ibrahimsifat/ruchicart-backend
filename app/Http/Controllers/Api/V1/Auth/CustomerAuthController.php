@@ -981,10 +981,11 @@ class CustomerAuthController extends Controller
         $user->login_medium = 'social';
         $user->save();
 
-        $phoneVerificationStatus = (int) $this->loginSetup->where(['key' => 'phone_verification'])?->first()->value ?? 0;
-        if ($phoneVerificationStatus){
-            return response()->json(['temp_token' => $temporaryToken, 'status' => false], 200);
-        }
+        //TODO: disable the phone verification off for the social media login
+        // $phoneVerificationStatus = (int) $this->loginSetup->where(['key' => 'phone_verification'])?->first()->value ?? 0;
+        // if ($phoneVerificationStatus){
+        //     return response()->json(['temp_token' => $temporaryToken, 'status' => false], 200);
+        // }
 
         $token = $user->createToken('RestaurantCustomerAuth')->accessToken;
         return response()->json(['token' => $token], 200);
