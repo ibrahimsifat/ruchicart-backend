@@ -168,6 +168,7 @@ class CustomerAuthController extends Controller
         }
 
         $emailVerification = (int) $this->loginSetup->where(['key' => 'email_verification'])?->first()->value ?? 0;
+        $existingUser = $this->user->where('email', $request['email'])->first();
 
         if ($emailVerification == 1) {
 
@@ -223,7 +224,8 @@ class CustomerAuthController extends Controller
         } else {
             return response()->json([
                 'message' => translate('Email is ready to register'),
-                'token' => 'inactive'
+                'token' => 'inactive',
+                "isExist"=> $existingUser?1:0
             ], 200);
         }
     }
